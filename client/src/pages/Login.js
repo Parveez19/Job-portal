@@ -1,80 +1,59 @@
 import React, { useState } from "react";
-import InputFrom from "../components/shared/InputFrom";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { hideLoading, showLoading } from "../redux/features/alertSlice";
-import Spinner from "../components/shared/Spinner";
 import { toast } from "react-toastify";
+import { FaUser, FaLock } from "react-icons/fa";
+import Spinner from "../components/shared/Spinner";
+import "../styles/Login.css"; // Import the new CSS file
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // redux state
   const { loading } = useSelector((state) => state.alerts);
 
-  // form function
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(showLoading());
-      const { data } = await axios.post("/api/v1/auth/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post("/api/v1/auth/login", { email, password });
       if (data.success) {
         dispatch(hideLoading());
         localStorage.setItem("token", data.token);
-        toast.success("Login SUccessfully ");
+        toast.success("Login Successfully");
         navigate("/dashboard");
       }
     } catch (error) {
       dispatch(hideLoading());
-      toast.error("Invalid Credintial please try again!");
+      toast.error("Invalid Credentials, please try again!");
       console.log(error);
     }
   };
+
   return (
     <>
       {loading ? (
         <Spinner />
       ) : (
-        <div className="form-container">
-          <form className="card p-2" onSubmit={handleSubmit}>
-            <img
-              src="/assets/images/logo/logo.png"
-              alt="logo"
-              height={150}
-              width={400}
-            />
-
-            <InputFrom
-              htmlFor="email"
-              labelText={"Email"}
-              type={"email"}
-              value={email}
-              handleChange={(e) => setEmail(e.target.value)}
-              name="email"
-            />
-            <InputFrom
-              htmlFor="password"
-              labelText={"Password"}
-              type={"password"}
-              value={password}
-              handleChange={(e) => setPassword(e.target.value)}
-              name="password"
-            />
-
-            <div className="d-flex justify-content-between">
-              <p>
-                Not a user <Link to="/register">Register Here!</Link>{" "}
-              </p>
-              <button type="submit" className="btn btn-primary">
-                Login
-              </button>
+        <div className="login-container">
+          <form className="login-card" onSubmit={handleSubmit}>
+            <img src="/assets/images/logo/logo.png" alt="logo" className="logo" />
+            <h2>Login</h2>
+            <div className="input-group">
+              <FaUser className="icon" />
+              <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
+            <div className="input-group">
+              <FaLock className="icon" />
+              <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <button type="submit" className="btn">Login</button>
+            <p className="register-link">
+              Not a user? <Link to="/register">Register Here!</Link>
+            </p>
           </form>
         </div>
       )}

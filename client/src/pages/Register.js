@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import InputFrom from "../components/shared/InputFrom";
 import { useDispatch, useSelector } from "react-redux";
-import { hideLoading, showLoading } from "../redux/features/alertSlice";
 import axios from "axios";
-import Spinner from "../components/shared/Spinner";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
 import { toast } from "react-toastify";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import Spinner from "../components/shared/Spinner";
+import "../styles/Register.css"; // Import the new CSS file
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -13,14 +14,10 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //redux state
   const { loading } = useSelector((state) => state.alerts);
-
-  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // form function
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -41,7 +38,7 @@ const Register = () => {
       }
     } catch (error) {
       dispatch(hideLoading());
-      toast.error("Invalid Form Details Please Try Agian!");
+      toast.error("Invalid Form Details Please Try Again!");
       console.log(error);
     }
   };
@@ -51,55 +48,30 @@ const Register = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="form-container">
-          <form className="card p-2" onSubmit={handleSubmit}>
-            <img
-              src="/assets/images/logo/logo.png"
-              alt="logo"
-              height={150}
-              width={400}
-            />
-            <InputFrom
-              htmlFor="name"
-              labelText={"Name"}
-              type={"text"}
-              value={name}
-              handleChange={(e) => setName(e.target.value)}
-              name="name"
-            />
-            <InputFrom
-              htmlFor="lastName"
-              labelText={"Last Name"}
-              type={"text"}
-              value={lastName}
-              handleChange={(e) => setLastName(e.target.value)}
-              name="lastName"
-            />
-            <InputFrom
-              htmlFor="email"
-              labelText={"Email"}
-              type={"email"}
-              value={email}
-              handleChange={(e) => setEmail(e.target.value)}
-              name="email"
-            />
-            <InputFrom
-              htmlFor="password"
-              labelText={"Password"}
-              type={"password"}
-              value={password}
-              handleChange={(e) => setPassword(e.target.value)}
-              name="password"
-            />
-
-            <div className="d-flex justify-content-between">
-              <p>
-                Already Register <Link to="/login">Login</Link>{" "}
-              </p>
-              <button type="submit" className="btn btn-primary">
-                Register
-              </button>
+        <div className="register-container">
+          <form className="register-card" onSubmit={handleSubmit}>
+            <img src="/assets/images/logo/logo.png" alt="logo" className="logo" />
+            <h2>Register</h2>
+            <div className="input-group">
+              <FaUser className="icon" />
+              <input type="text" placeholder="First Name" value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
+            <div className="input-group">
+              <FaUser className="icon" />
+              <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+            </div>
+            <div className="input-group">
+              <FaEnvelope className="icon" />
+              <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="input-group">
+              <FaLock className="icon" />
+              <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <button type="submit" className="btn">Register</button>
+            <p className="login-link">
+              Already registered? <Link to="/login">Login Here!</Link>
+            </p>
           </form>
         </div>
       )}

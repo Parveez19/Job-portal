@@ -18,8 +18,9 @@ const Layout = ({ children }) => {
     <>
       <div className="row">
         <div className="col-md-3 sidebar">
-          <div className="logo">
-            <h6>JOB PORTAL</h6>
+          <div className="logo"><h6>TALENT HIVE</h6>
+            <img src="/assets/images/logo/logo.png" alt="logo" className="logo"  />
+          
           </div>
           <hr />
           <p className="text-center text-warning">Welcome : username</p>

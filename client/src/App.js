@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import JobList from "./pages/JobListing"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/routes/PrivateRoute";
@@ -48,7 +49,11 @@ function App() {
           }
         />
         <Route path="*" element={<NotFound />} />
-      </Routes>
+      
+       
+        <Route path="/jobs" element={<JobList />} />
+         </Routes>
+
     </>
   );
 }
